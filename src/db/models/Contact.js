@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose';
 
+import { hendleSaveError, setUpdateSettings } from './hooks';
+
 const contactSchema = new Schema(
   {
     name: {
@@ -29,5 +31,11 @@ const contactSchema = new Schema(
     timestamps: true,
   },
 );
+
+contactSchema.post('save', hendleSaveError);
+
+contactSchema.pre('findOneAndUpdate', setUpdateSettings);
+
+contactSchema.post('findOneAndUpdate', hendleSaveError);
 
 export const ContactCollection = model('contact', contactSchema);
