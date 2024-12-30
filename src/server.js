@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
-import { logger } from './middlewares/logger.js';
+// import { logger } from './middlewares/logger.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
@@ -14,7 +15,9 @@ export const startServer = () => {
 
   app.use(express.json());
   app.use(cors());
-  app.use(logger);
+  app.use(cookieParser());
+
+  // app.use(logger);
 
   app.use('/auth', authRouter);
   app.use('/contacts', contactsRouter);
