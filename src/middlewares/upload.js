@@ -1,6 +1,6 @@
 import multer from 'multer';
 
-import { TEMP_UPLOADS_DIR } from '../constants/index.JS';
+import { TEMP_UPLOADS_DIR } from '../constants/index.js';
 import createError from 'http-errors';
 
 const storage = multer.diskStorage({

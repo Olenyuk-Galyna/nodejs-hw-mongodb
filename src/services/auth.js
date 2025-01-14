@@ -47,21 +47,21 @@ export const register = async (payload) => {
     password: hashPassword,
   });
 
-  const template = Handlebars.compile(emailTemplateSource);
+  // const template = Handlebars.compile(emailTemplateSource);
 
-  const token = jwt.sign({ email }, jwtSecret, { ixparesIn: '1h' });
+  // const token = jwt.sign({ email }, jwtSecret, { ixparesIn: '1h' });
 
-  const html = template({
-    link: `${appDomain}/auth/verify?token=${token}`,
-  });
+  // const html = template({
+  //   link: `${appDomain}/auth/verify?token=${token}`,
+  // });
 
-  const verifyEmail = {
-    to: email,
-    subject: 'Verify email',
-    html,
-  };
+  // const verifyEmail = {
+  //   to: email,
+  //   subject: 'Verify email',
+  //   html,
+  // };
 
-  await sendEmail(verifyEmail);
+  // await sendEmail(verifyEmail);
 
   return newUser;
 };
@@ -84,7 +84,7 @@ export const login = async ({ email, password }) => {
   const user = await UserCollection.findOne({ email });
   if (!user) throw createHttpError(401, 'Email or password invalid');
 
-  if (!user.verify) throw createHttpError(401, 'Email not verifyed');
+  // if (!user.verify) throw createHttpError(401, 'Email not verifyed');
 
   const passwordCompare = await bcrypt.compare(password, user.password);
   if (!passwordCompare) throw createHttpError(401, 'Email or password invalid');
@@ -135,13 +135,16 @@ export const requestResetToken = async (email) => {
       email,
     },
     getEnvVar('JWT_SECRET'),
+    {
+      expiresIn: '15m',
+    },
   );
 
   await sendEmail({
     from: getEnvVar(SMTP.SMTP_FROM),
     to: email,
     subject: 'Reset your password',
-    html: `<p>Click <a href="${resetToken}">here</a> to reset your password!</p>`,
+    html: `<p>Click <a href="http://localhost:3000/reset-password?token=${resetToken}">here</a> to reset your password!</p>`,
   });
 };
 
