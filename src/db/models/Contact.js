@@ -1,5 +1,9 @@
 import { model, Schema } from 'mongoose';
 
+import { typeList } from '../../constants/contactsConstants.js';
+
+import { hendleSaveError, setUpdateSettings } from '../models/hooks.js';
+
 const contactSchema = new Schema(
   {
     name: {
@@ -16,18 +20,41 @@ const contactSchema = new Schema(
     isFavourite: {
       type: Boolean,
       default: false,
-      required: true,
     },
     contactType: {
       type: String,
-      enum: ['work', 'home', 'personal'],
+      enum: typeList,
       default: 'personal',
       required: true,
+    },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
+    },
+    photo: {
+      type: String,
     },
   },
   {
     timestamps: true,
+    versionKey: false,
   },
 );
+
+contactSchema.post('save', hendleSaveError);
+
+contactSchema.pre('findOneAndUpdate', setUpdateSettings);
+
+contactSchema.post('findOneAndUpdate', hendleSaveError);
+
+export const sortByList = [
+  '_id',
+  'name',
+  'phoneNumber',
+  'email',
+  'isFavourite',
+  'contactType',
+];
 
 export const ContactCollection = model('contact', contactSchema);
