@@ -20,7 +20,6 @@ const contactSchema = new Schema(
     isFavourite: {
       type: Boolean,
       default: false,
-      required: true,
     },
     contactType: {
       type: String,
@@ -33,7 +32,7 @@ const contactSchema = new Schema(
       ref: 'user',
       required: true,
     },
-    poster: {
+    photo: {
       type: String,
     },
   },

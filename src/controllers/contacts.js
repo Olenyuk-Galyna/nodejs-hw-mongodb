@@ -46,20 +46,20 @@ export const getContactByIdController = async (req, res) => {
 };
 
 export const addContactController = async (req, res) => {
-  const cloudinaryEnable = getEnvVar('CLOUDINARY_ENABLE') === true;
-  let poster;
+  const cloudinaryEnable = getEnvVar('CLOUDINARY_ENABLE') === 'true';
+  let photo;
   if (req.file) {
     if (cloudinaryEnable) {
-      poster = await saveFileToCloudinary(req.file);
+      photo = await saveFileToCloudinary(req.file);
     } else {
-      poster = await saveFileToUploadsDir(req.file);
+      photo = await saveFileToUploadsDir(req.file);
     }
   }
 
   const { _id: userId } = req.user;
   const data = await contactServices.addContact({
     ...req.body,
-    poster,
+    photo,
     userId,
   });
 
@@ -74,7 +74,20 @@ export const patchtContactController = async (req, res) => {
   const { id: _id } = req.params;
   const { _id: userId } = req.user;
 
-  const result = await contactServices.updateContact({ _id, userId }, req.body);
+  const cloudinaryEnable = getEnvVar('CLOUDINARY_ENABLE') === 'true';
+  let photo;
+  if (req.file) {
+    if (cloudinaryEnable) {
+      photo = await saveFileToCloudinary(req.file);
+    } else {
+      photo = await saveFileToUploadsDir(req.file);
+    }
+  }
+
+  const result = await contactServices.updateContact(
+    { _id, userId },
+    { ...req.body, photo },
+  );
 
   if (!result) {
     throw createError(404, `Contact with id=${_id} not found`);

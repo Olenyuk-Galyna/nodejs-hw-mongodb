@@ -99,8 +99,6 @@ export const login = async ({ email, password }) => {
 };
 
 export const refreshToken = async ({ refreshToken, sessionId }) => {
-  console.log(refreshToken, sessionId);
-
   const oldSession = await SessionCollection.findOne({
     _id: sessionId,
     refreshToken,
