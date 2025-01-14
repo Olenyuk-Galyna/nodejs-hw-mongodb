@@ -10,6 +10,7 @@ import {
   createContactSchema,
   contactUpdateSchema,
 } from '../validation/contacts.js';
+import { upload } from '../middlewares/upload.js';
 
 const contactsRouter = Router();
 contactsRouter.use(authenticate);
@@ -24,6 +25,7 @@ contactsRouter.get(
 
 contactsRouter.post(
   '/',
+  upload.single('poster'),
   validateBody(createContactSchema),
   ctrlWrapper(contactsController.addContactController),
 );
