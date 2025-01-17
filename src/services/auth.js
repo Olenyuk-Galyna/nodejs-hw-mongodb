@@ -4,7 +4,7 @@ import { randomBytes } from 'crypto';
 import path from 'node:path';
 
 import { readFile } from 'node:fs/promises';
-import Handlebars from 'handlebars';
+// import Handlebars from 'handlebars';
 
 import UserCollection from '../db/models/User.js';
 import SessionCollection from '../db/models/Session.js';
