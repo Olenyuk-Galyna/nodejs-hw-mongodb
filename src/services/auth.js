@@ -4,7 +4,7 @@ import { randomBytes } from 'crypto';
 import path from 'node:path';
 
 import { readFile } from 'node:fs/promises';
-import Handlebars from 'handlebars';
+// import Handlebars from 'handlebars';
 
 import UserCollection from '../db/models/User.js';
 import SessionCollection from '../db/models/Session.js';
@@ -19,6 +19,8 @@ import { SMTP } from '../constants/index.js';
 import { getEnvVar } from '../utils/getEnvVar.js';
 import { sendEmail } from '../utils/sendMail.js';
 import { TEMPLATES_DIR } from '../constants/index.js';
+
+import { ContactCollection } from '../db/models/Contact.js';
 
 const emailTemplatePath = path.join(TEMPLATES_DIR, 'verify-email.html');
 
